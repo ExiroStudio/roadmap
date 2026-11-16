@@ -1,7 +1,7 @@
 # Pipeline Itu Target Serangan: Kunci Server Jangan Jadi Kunci Rumah
 
 ::: info **Prasyarat Modul**
-Kamu sudah paham alur *pipeline* dari Halaman 1 dan strategi *deploy* dari Halaman 2. Halaman ini relatif pendek, tapi isinya yang bikin lab di Halaman 6 aman saat dijalankan di server beneran.
+Kamu sudah paham alur *pipeline* dari Halaman 1 dan strategi *deploy* dari Halaman 2. Halaman ini relatif pendek, tapi isinya yang menentukan apakah *pipeline* seperti di Halaman 5 aman dilanjutkan sampai ke server beneran.
 :::
 
 Sekarang coba kita balik sudut pandangnya. Selama ini *pipeline* kita anggap sebagai asisten yang membantu pekerjaan kita.
@@ -125,7 +125,7 @@ Ada dua cara menjaga pintu webhook:
 
 | Cara | Bagaimana | Kelemahan | 
 | ----- | ----- | ----- | 
-| **URL rahasia** *(Render, Vercel, sehooks)* | Token acak panjang ditempel di URL: `POST /webhook/<token>` | Siapa pun yang pernah melihat URL bisa memicu *deploy*, dan URL gampang bocor ke *log*. | 
+| **URL rahasia** *(Render, Vercel)* | Token acak panjang ditempel di URL: `POST /webhook/<token>` | Siapa pun yang pernah melihat URL bisa memicu *deploy*, dan URL gampang bocor ke *log*. | 
 | **Tanda tangan HMAC** *(GitHub)* | Pengirim menghitung HMAC dari isi *request* memakai *secret* bersama dan mengirimnya di *header* (`X-Hub-Signature-256`). | Lebih rumit di sisi pengirim dan penerima. Dokumentasi GitHub juga belum membahas *replay attack*, jadi kita harus menambah proteksi *timestamp* dan *nonce* sendiri. | 
 
 Dokumentasi GitHub juga menekankan dua kebiasaan penting saat memvalidasi webhook: gunakan perbandingan ***constant-time*** (jangan pakai operator `==` biasa agar terhindar dari *timing attack*), dan gunakan *secret* acak berentropi tinggi.
@@ -162,7 +162,7 @@ Kebalikannya adalah **model *pull***: sebuah agen di dalam server yang aktif men
 | **Push** | *Pipeline* | **Ada** (SSH atau Webhook) | Kunci SSH atau URL webhook bocor, sehingga pihak lain bisa memicu *deploy*. | 
 | **Pull** | Agen di dalam server | **Tidak ada** (server yang menelepon keluar) | Agen memercayai sumber yang ditariknya; jika salah konfigurasi, agen akan menerapkan apa saja. | 
 
-Di lab modul ini kita memakai model **push** karena alurnya paling lugas dan mudah diamati hasilnya. Model **pull** dikenalkan di sini supaya kamu tahu bahwa *"tidak membuka pintu masuk sama sekali"* juga merupakan pilihan arsitektur yang nyata.
+Lab di Halaman 5 sengaja tidak menyentuh server pribadi: situsnya ditayangkan ke GitHub Pages, yang sudah mengurus pintu masuknya sendiri. Model **push** dan **pull** di atas kamu temui saat *deploy* ke server milikmu sendiri. Dikenalkan di sini supaya kamu tahu bahwa *"tidak membuka pintu masuk sama sekali"* juga merupakan pilihan arsitektur yang nyata.
 
 ## Tabel Jebakan
 
